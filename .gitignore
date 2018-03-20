@@ -9,3 +9,8 @@ __history
 fastmm4
 dunit
 backup/*
+*.dll
+perf/local_thr.stat
+tests/tests.stat
+perf/local_thr.res
+tests/tests.res

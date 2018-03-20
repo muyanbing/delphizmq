@@ -1,4 +1,4 @@
-{
+﻿{
     Copyright (c) 2012 Varga Balázs (bb.varga@gmail.com)
 
     This file is part of 0MQ Delphi binding
@@ -129,7 +129,11 @@ function zmq_term(context: Pointer): Integer; cdecl; external {$IFNDEF ZMQ_STATI
 
 type
   zmq_msg_t = record
+    {$ifdef zmq4}
+    _: Array[0..64-1] of Byte;
+    {$else}
     _: Array[0..32-1] of Byte;
+    {$endif}
   end;
 
 {$else}
@@ -283,31 +287,18 @@ const
 {******************************************************************************}
 
 {*  Socket transport events (tcp and ipc only)                                *}
-  ZMQ_EVENT_CONNECTED = 1;
-  ZMQ_EVENT_CONNECT_DELAYED = 2;
-  ZMQ_EVENT_CONNECT_RETRIED = 4;
-
-  ZMQ_EVENT_LISTENING = 8;
-  ZMQ_EVENT_BIND_FAILED = 16;
-
-  ZMQ_EVENT_ACCEPTED = 32;
-  ZMQ_EVENT_ACCEPT_FAILED = 64;
-
-  ZMQ_EVENT_CLOSED = 128;
-  ZMQ_EVENT_CLOSE_FAILED = 256;
-  ZMQ_EVENT_DISCONNECTED =512;
-
-  ZMQ_EVENT_ALL =
-    ZMQ_EVENT_CONNECTED or
-    ZMQ_EVENT_CONNECT_DELAYED or
-    ZMQ_EVENT_CONNECT_RETRIED or
-    ZMQ_EVENT_LISTENING or
-    ZMQ_EVENT_BIND_FAILED or
-    ZMQ_EVENT_ACCEPTED or
-    ZMQ_EVENT_ACCEPT_FAILED or
-    ZMQ_EVENT_CLOSED or
-    ZMQ_EVENT_CLOSE_FAILED or
-    ZMQ_EVENT_DISCONNECTED;
+const ZMQ_EVENT_CONNECTED = $0001;
+const ZMQ_EVENT_CONNECT_DELAYED = $0002;
+const ZMQ_EVENT_CONNECT_RETRIED = $0004;
+const ZMQ_EVENT_LISTENING = $0008;
+const ZMQ_EVENT_BIND_FAILED = $0010;
+const ZMQ_EVENT_ACCEPTED = $0020;
+const ZMQ_EVENT_ACCEPT_FAILED = $0040;
+const ZMQ_EVENT_CLOSED = $0080;
+const ZMQ_EVENT_CLOSE_FAILED = $0100;
+const ZMQ_EVENT_DISCONNECTED = $0200;
+const ZMQ_EVENT_MONITOR_STOPPED = $0400;
+const ZMQ_EVENT_ALL = $FFFF;
 
 {*  Socket event data (union member per event)                                *}
 type
